@@ -1,50 +1,74 @@
+import processing.sound.*;
+int fq = 1;
+SinOsc sinWave;
+
 int arr[];
 int pos; //current position we are looking at
 int testPos; //second position to be tested
 int endPos; //last position needed to be tested
 
+boolean stepwise = false;
 
 void setup() {
   size(400, 400);
   background(0);
-  arr = randomArray(10);
+  arr = randomArray(50);
 
   pos = 0;
   testPos = pos + 1;
   endPos = arr.length - 1;
+
+  //sound stuff
+  sinWave = new SinOsc(this);
+
+  if (stepwise) {
+    noLoop();
+  }
+  else {
+    sinWave.play();
+  }
 }//setup
 
 
 void draw() {
   background(0);
 
-  //if endpos is 0, sorted! just display
-  if ( endPos == 0 ) {
-    displayArray(arr, -1, -1, -1);
-  }//sorted
-  //else
-  else {
+  background(0);
+
+  //if the end isn't 0, keep sorting
+  if (endPos != 0) {
+
+    //display
     displayArray(arr, pos, testPos, endPos);
-    //compare values at pos and testPos
-    //if out of order, swap
-    if ( arr[pos] > arr[testPos] ) {
-      swap(arr, pos, testPos);
+    if (!stepwise) {
+      fq = arr[testPos];
+      sinWave.freq(fq);
     }
-    //if not out of order
-    else {
-      //+1 to pos and testPos
-      pos++;
+
+    //if second value is less than first, swap
+    if (arr[testPos] < arr[pos]) {
+      swap(arr, testPos, pos);
+    }//smaller position
+
+    //otherwise, move each position up
+    else if (pos < endPos) {
       testPos++;
+      pos++;
     }
-    //if pos is at endpos
-    if (pos == endPos) {
-      //reset pos to 0 (and testPos to 1)
-      pos = 0;
-      testPos = 1;
-      //decrease endPos
+
+    //if pos is at the end, reset pos to beginning, move end down 1
+    if (pos >= endPos) {
+      pos=0;
+      testPos = pos+1;
       endPos--;
     }
-  } //unsorted
+  }//not sorted
+
+  //fully sorted! display
+  else {
+    displayArray(arr, -1, -1, -1);
+    sinWave.stop();
+  }
 }//draw
 
 
@@ -86,3 +110,19 @@ void displayArray(int[] arr, int p, int tp, int sp) {
     x+= barWidth;
   }
 }//displayArray
+
+void keyPressed() {
+  if (key == 's' && stepwise) {
+    stepwise = false;
+    sinWave.play();
+    loop();
+  }
+  else if (key == 's' && !stepwise) {
+    stepwise = true;
+    sinWave.stop();
+    noLoop();
+  }
+  else if (stepwise) {
+    redraw();
+  }
+}

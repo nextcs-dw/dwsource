@@ -1,32 +1,50 @@
+import processing.sound.*;
+int fq = 1;
+SinOsc sinWave;
+
 int arr[];
-int pos; //the current spot we want to find
-int smallPos; //the position of the smallest element we've found so far
-int testPos; //the current position we are testing
+int pos;
+int smallPos;
+int testPos;
+
+boolean stepwise = false;
 
 void setup() {
   size(400, 400);
   background(0);
-  arr = randomArray(20);
+  sinWave = new SinOsc(this);
 
+  arr = randomArray(100);
+  frameRate(60);
   pos = 0;
-  testPos = pos + 1;
-  smallPos = 0;
+  smallPos = pos;
+  testPos = smallPos + 1;
 
+  if (stepwise) {
+    noLoop();
+  }
+  else {
+    sinWave.play();
+  }
 }//setup
-
 
 void draw() {
   background(0);
   //if pos == length - 1, then we're sorted! display
-  if ( pos == arr.length - 1) {
+  if (pos == arr.length-1) {
     displayArray(arr, -1, -1, -1);
+    sinWave.stop();
   }
   //else
   else {
-     displayArray(arr, pos, testPos, smallPos);
+    displayArray(arr, pos, testPos, smallPos);
+    if (!stepwise) {
+      fq = arr[testPos];
+      sinWave.freq(fq);
+    }
     //compare elements at testPos and smallPos
-    //if testPos element < smallPos element, update smallPos
     if (arr[testPos] < arr[smallPos]) {
+    //if testPos element < smallPos element, update smallPos
       smallPos = testPos;
     }
     //move testPos over 1
@@ -34,6 +52,7 @@ void draw() {
 
     //if testPos == length of the array
     if (testPos == arr.length) {
+      //swap(pos, smallPos)
       swap(arr, pos, smallPos);
       //move pos over by 1
       pos++;
@@ -43,7 +62,7 @@ void draw() {
       smallPos = pos;
     }
   }
-}//draw
+}
 
 
 void swap(int[] arr, int i0, int i1) {
@@ -84,3 +103,20 @@ void displayArray(int[] arr, int p, int tp, int sp) {
     x+= barWidth;
   }
 }//displayArray
+
+
+void keyPressed() {
+  if (key == 's' && stepwise) {
+    stepwise = false;
+    sinWave.play();
+    loop();
+  }
+  else if (key == 's' && !stepwise) {
+    stepwise = true;
+    sinWave.stop();
+    noLoop();
+  }
+  else if (stepwise) {
+    redraw();
+  }
+}

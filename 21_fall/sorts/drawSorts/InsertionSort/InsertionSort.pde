@@ -1,49 +1,71 @@
+import processing.sound.*;
+int fq = 1;
+SinOsc sinWave;
+
+
 int arr[];
-int pos; //current position to test
-int sortEnd; //end of the sorted portion
-int insertVal; //value to be added
+int pos;
+int sortEnd;
+int insertVal;
+boolean shifting;
+
+boolean stepwise = false;
 
 void setup() {
+
+  sinWave = new SinOsc(this);
+
   size(400, 400);
   background(0);
-  arr = randomArray(10);
+  arr = randomArray(50);
 
+  //start:
+  //consider index 0 sorted
+  //index 1 is the value to insert
+  //keep track fo value at index 1
   sortEnd = 0;
-  pos = sortEnd + 1;
+  pos = 1;
   insertVal = arr[pos];
-}//setup
+  shifting = true;
 
+  if (stepwise) {
+    noLoop();
+  }
+  else {
+    sinWave.play();
+  }
+}//setup
 
 void draw() {
   background(0);
 
-  //if sorted, just display. sortEnd is arr.length -1
-  if ( sortEnd == arr.length - 1) {
+  //if we've reached the end, don't continue
+  if (sortEnd == arr.length-1) {
     displayArray(arr, -1, -1, -1);
-  }
-  //else
+    sinWave.stop();
+  }//done sorting
   else {
-  displayArray(arr, pos, sortEnd, insertVal);
-    //compare insertVal and arr[pos -1]
-    //if pos is not 0 AND inserVal <
-    if (pos != 0 && insertVal < arr[pos-1] ) {
-      //move value at [pos-1] to [pos]
+    displayArray(arr, pos, sortEnd, insertVal);
+
+    if (!stepwise) {
+      fq = arr[pos];
+      sinWave.freq(fq);
+    }
+
+    if (pos != 0 && arr[pos-1] > insertVal) {
       arr[pos] = arr[pos-1];
-      //decrease pos
       pos--;
     }
-    //else
     else {
-      //set arr[pos] to insertVal
       arr[pos] = insertVal;
-      //reset sortEnd, pos, insertVal
       sortEnd++;
       pos = sortEnd + 1;
       if (pos < arr.length) {
-        insertVal = arr[pos];
+      insertVal = arr[pos];
       }
     }
-  }//unsorted
+  }
+
 }//draw
 
 
@@ -80,3 +102,19 @@ void displayArray(int[] arr, int p, int se, int iv) {
     x+= barWidth;
   }
 }//displayArray
+
+void keyPressed() {
+  if (key == 's' && stepwise) {
+    stepwise = false;
+    sinWave.play();
+    loop();
+  }
+  else if (key == 's' && !stepwise) {
+    stepwise = true;
+    sinWave.stop();
+    noLoop();
+  }
+  else if (stepwise) {
+    redraw();
+  }
+}
