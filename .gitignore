@@ -1,0 +1,10 @@
+# Files
+.DS_Store
+*.class
+*.swp
+*~
+scratch.*
+
+# Folders
+build/
+tmp/*
