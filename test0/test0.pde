@@ -16,12 +16,10 @@ void draw() {
 
   plus(width/2, py, psize);
   py+= speed;
-  if (py+psize/2 > height) {
-    speed = -1;
-  }//bounce up
-  if (py-psize/2 < 0) {
-    speed = 1;
-  }//bounce down
+  if (py + psize/2 > height ||
+      py - psize/2 < 0 ) {
+    speed*= -1;
+  }//bounce
   if (py < height/2) {
     fill(0, 255, 0);
   }//top half fill
