@@ -17,7 +17,8 @@ void setup() {
   maxValue = 300;
   haystack = new int[dataSize];
   randInts(haystack, 0, maxValue);
-  needle = int(random(0, maxValue));
+  //needle = int(random(0, maxValue));
+  needle = haystack[int(random(dataSize))];
   drawBars(haystack, width/haystack.length);
   searchPos = 0;
   found = false;
@@ -28,11 +29,20 @@ void draw() {
   background(0);
   drawBars(haystack, width/haystack.length);
 
-  if (true) {
-
+  if (searchPos < dataSize) {
+    searchHighlight(haystack, searchPos, width/haystack.length);
+    if (haystack[searchPos] == needle) {
+      found = true;
+    }//found!
+    if (liveSearch && !found) {
+      searchPos++;
+    }//auto search
   }//within bound
   else {
-
+    textAlign(LEFT, TOP);
+    text("looking for: " + needle, 0, 0);
+    textAlign(RIGHT, TOP);
+    text("not found", width, 0);
   }//not found
 
 }//draw
