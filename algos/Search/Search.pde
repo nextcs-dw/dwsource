@@ -7,6 +7,9 @@ int needle; //value to find
 int searchPos; //current index to look for needle
 boolean found; //ture if needle found in haystack
 boolean liveSearch; //if true, automatically increment searchPos in draw
+int start;
+int end;
+boolean sorted;
 
 
 void setup() {
@@ -27,8 +30,12 @@ void setup() {
 
 void draw() {
   background(0);
-  drawBars(haystack, width/haystack.length);
+  linearSearch();
+}//draw
 
+
+void linearSearch() {
+  drawBars(haystack, width/haystack.length);
   if (searchPos < dataSize) {
     searchHighlight(haystack, searchPos, width/haystack.length);
     if (haystack[searchPos] == needle) {
@@ -44,8 +51,7 @@ void draw() {
     textAlign(RIGHT, TOP);
     text("not found", width, 0);
   }//not found
-
-}//draw
+} //linearSearch
 
 void keyPressed() {
   if (key == 'r') {
