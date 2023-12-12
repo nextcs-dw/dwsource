@@ -11,6 +11,8 @@ int start;
 int end;
 boolean sorted;
 
+int countUntilFound;
+int totalRuns;
 
 void setup() {
   size (600, 400);
@@ -26,11 +28,15 @@ void setup() {
   searchPos = 0;
   found = false;
   liveSearch = false;
+  countUntilFound = 0;
+  totalRuns = 1;
 }//setup
 
 void draw() {
   background(0);
   linearSearch();
+  textAlign(LEFT, TOP);
+  text(countUntilFound / totalRuns, 0, 25);
 }//draw
 
 
@@ -43,6 +49,7 @@ void linearSearch() {
     }//found!
     if (liveSearch && !found) {
       searchPos++;
+      countUntilFound++;
     }//auto search
   }//within bound
   else {
@@ -55,15 +62,19 @@ void linearSearch() {
 
 void keyPressed() {
   if (key == 'r') {
-    println("reset");
     randInts(haystack, 0, maxValue);
     searchPos = 0;
     found = false;
     liveSearch = false;
+    totalRuns++;
   }//reset
+  if (key == 's') {
+    haystack = sort(haystack);
+  }
   if (keyCode == RIGHT && !found) {
     searchPos++;
-  }//search enxt value
+    countUntilFound++;
+  }//search next value
   if (keyCode == ' ') {
     liveSearch = !liveSearch;
   }//toggle liveSearch
