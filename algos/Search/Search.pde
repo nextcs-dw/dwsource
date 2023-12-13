@@ -10,33 +10,38 @@ boolean liveSearch; //if true, automatically increment searchPos in draw
 int start;
 int end;
 boolean sorted;
+boolean continuous;
 
 int countUntilFound;
 int totalRuns;
+float averageCount;
 
 void setup() {
   size (600, 400);
   background(0);
   textSize(25);
-  dataSize = 100;
+  dataSize = 200;
   maxValue = 300;
   haystack = new int[dataSize];
+  averageCount = 0;
+  countUntilFound = 0;
+  totalRuns = 0;
   randInts(haystack, 0, maxValue);
-  //needle = int(random(0, maxValue));
-  needle = haystack[int(random(dataSize))];
-  drawBars(haystack, width/haystack.length);
   searchPos = 0;
+  start = 0;
+  end = haystack.length - 1;
   found = false;
   liveSearch = false;
-  countUntilFound = 0;
-  totalRuns = 1;
+  continuous = false;
+  sorted = false;
+  //uncomment to gaurantee needle in haystack
+  needle = haystack[int(random(dataSize))];
+  drawBars(haystack, width/haystack.length);
 }//setup
 
 void draw() {
   background(0);
   linearSearch();
-  textAlign(LEFT, TOP);
-  text(countUntilFound / totalRuns, 0, 25);
 }//draw
 
 
@@ -44,8 +49,12 @@ void linearSearch() {
   drawBars(haystack, width/haystack.length);
   if (searchPos < dataSize) {
     searchHighlight(haystack, searchPos, width/haystack.length);
+    displayStats(false);
     if (haystack[searchPos] == needle) {
       found = true;
+      if (continuous) {
+        reset();
+      }
     }//found!
     if (liveSearch && !found) {
       searchPos++;
@@ -53,20 +62,19 @@ void linearSearch() {
     }//auto search
   }//within bound
   else {
-    textAlign(LEFT, TOP);
-    text("looking for: " + needle, 0, 0);
-    textAlign(RIGHT, TOP);
-    text("not found", width, 0);
+    displayStats(true);
+    if (continuous) {
+      reset();
+    }
   }//not found
+
 } //linearSearch
+
+
 
 void keyPressed() {
   if (key == 'r') {
-    randInts(haystack, 0, maxValue);
-    searchPos = 0;
-    found = false;
-    liveSearch = false;
-    totalRuns++;
+    reset();
   }//reset
   if (key == 's') {
     haystack = sort(haystack);
@@ -75,10 +83,29 @@ void keyPressed() {
     searchPos++;
     countUntilFound++;
   }//search next value
-  if (keyCode == ' ') {
+  if (keyCode == ' ' && !continuous) {
     liveSearch = !liveSearch;
   }//toggle liveSearch
+
+  if (key == 'c') {
+    continuous = !continuous;
+    if (continuous) {
+      liveSearch = true;
+    }
+  }//enable continuous mode
 }//keyPressed
+
+void reset() {
+  randInts(haystack, 0, maxValue);
+  searchPos = 0;
+  found = false;
+  if (!continuous) {
+    liveSearch = false;
+    continuous = false;
+  }
+  totalRuns++;
+  averageCount = countUntilFound / (float)totalRuns;
+}//reset for more sorting
 
 void randInts(int[] data, int low, int high) {
   for (int i=0; i<data.length; i++) {
@@ -98,9 +125,22 @@ void drawBars(int[] data, int barWidth) {
 void searchHighlight(int[] data, int pos, int barWidth) {
   fill(255, 0, 255);
   rect(barWidth*pos, height, barWidth, -data[pos]);
+}//highlightBar
+
+
+void displayStats(boolean end) {
   fill(255);
   textAlign(LEFT, TOP);
   text("looking for: " + needle, 0, 0);
   textAlign(RIGHT, TOP);
-  text("search value: " + data[pos], width, 0);
-}//highlightBar
+  if (end) {
+    text("not found", width, 0);
+  }
+  else {
+    text("search value: " + haystack[searchPos], width, 0);
+  }
+  textAlign(LEFT, TOP);
+  text("Average count: " + averageCount, 0, 25);
+  textAlign(RIGHT, TOP);
+  text("Total runs: " + totalRuns, width, 25);
+}//displayStats
