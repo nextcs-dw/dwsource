@@ -42,19 +42,20 @@ void setup() {
 void draw() {
   background(0);
   if (sorted) {
-    binarySearch();
+    binarySearchPass();
   }
   else {
-    linearSearch();
+    linearSearchPass();
   }
 }//draw
 
 
-void binarySearch() {
+void binarySearchPass() {
+  drawBars(haystack, width/haystack.length);
 }
 
 
-void linearSearch() {
+void linearSearchPass() {
   drawBars(haystack, width/haystack.length);
   if (searchPos < dataSize) {
     searchHighlight(haystack, searchPos, width/haystack.length);
