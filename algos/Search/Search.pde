@@ -41,8 +41,17 @@ void setup() {
 
 void draw() {
   background(0);
-  linearSearch();
+  if (sorted) {
+    binarySearch();
+  }
+  else {
+    linearSearch();
+  }
 }//draw
+
+
+void binarySearch() {
+}
 
 
 void linearSearch() {
@@ -78,9 +87,15 @@ void keyPressed() {
   }//reset
   if (key == 's') {
     haystack = sort(haystack);
+    sorted = true;
   }
   if (keyCode == RIGHT && !found) {
-    searchPos++;
+    if (sorted) {
+
+    }//binary search
+    else {
+      searchPos++;
+    }//linear search
     countUntilFound++;
   }//search next value
   if (keyCode == ' ' && !continuous) {
@@ -97,6 +112,11 @@ void keyPressed() {
 
 void reset() {
   randInts(haystack, 0, maxValue);
+  if (sorted) {
+    haystack = sort(haystack);
+  }
+  start = 0;
+  end = haystack.length - 1;
   searchPos = 0;
   found = false;
   if (!continuous) {
