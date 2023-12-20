@@ -1,4 +1,5 @@
 int BUBBLE = 0;
+int SELECTION = 1;
 
 int dataSize;
 int maxValue;
@@ -11,7 +12,7 @@ void setup() {
   background(0);
   textSize(25);
 
-  dataSize = 50;
+  dataSize = 20;
   maxValue = max(300, dataSize);
   sorty = new SortArray(BUBBLE, dataSize, maxValue);
 }//setup
@@ -20,9 +21,8 @@ void draw() {
   background(0);
   sorty.display();
   if (liveSort) {
-    sorty.bubbleSortOnce();
+    sorty.sortOnce();
   }
-
 }//draw
 
 
@@ -34,7 +34,15 @@ void keyPressed() {
     liveSort = !liveSort;
   }
   if (keyCode == RIGHT) {
-    sorty.bubbleSortOnce();
+    sorty.sortOnce();
+  }
+  if (key == '1') {
+    sorty.algorithm = BUBBLE;
+    reset();
+  }
+  if (key == '2') {
+    sorty.algorithm = SELECTION;
+    reset();
   }
 }//keyPressed
 
@@ -42,23 +50,3 @@ void reset() {
   sorty.randInts();
   sorty.resetSortVars();
 }//reset for more sorting
-
-
-
-//
-// void displayStats(boolean end) {
-//   fill(255);
-//   textAlign(LEFT, TOP);
-//   text("looking for: " + needle, 0, 0);
-//   textAlign(RIGHT, TOP);
-//   if (end) {
-//     text("not found", width, 0);
-//   }
-//   else {
-//     text("search value: " + haystack[searchPos], width, 0);
-//   }
-//   textAlign(LEFT, TOP);
-//   text("Average count: " + averageCount, 0, 25);
-//   textAlign(RIGHT, TOP);
-//   text("Total runs: " + totalRuns, width, 25);
-// }//displayStats
