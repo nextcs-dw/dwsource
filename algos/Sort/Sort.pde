@@ -1,5 +1,6 @@
 int BUBBLE = 0;
 int SELECTION = 1;
+int INSERTION = 2;
 
 int dataSize;
 int maxValue;
@@ -42,6 +43,10 @@ void keyPressed() {
   }
   if (key == '2') {
     sorty.algorithm = SELECTION;
+    reset();
+  }
+  if (key == '3') {
+    sorty.algorithm = INSERTION;
     reset();
   }
 }//keyPressed

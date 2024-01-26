@@ -15,6 +15,12 @@ class SortArray {
   int ssortPos; //the current position to check
   int ssortMaxPos; //the position of the largest value so far
 
+  //insertion sort vars
+  int isortEnd;
+  int isortPos;
+  int isortInsertPos;
+  int isortValue;
+
   SortArray(int algo, int dsize, int mvalue) {
     maxValue = mvalue;
     haystack = new int[dsize];
@@ -34,6 +40,11 @@ class SortArray {
     ssortEnd = haystack.length;
     ssortPos = 1;
     ssortMaxPos = 0;
+
+    //inseration sort vars
+    int isortEnd = 1;
+    int isortPos = 0;
+    int isortValue = haystack[isortEnd];
   }//resetSortVars
 
   void sortOnce() {
