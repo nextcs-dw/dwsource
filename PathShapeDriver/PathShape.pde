@@ -10,7 +10,7 @@ class PathShape {
     numPoints = np;
     corner = new PVector(cx, cy);
     shapeSize = ss;
-    inside = color(0, 255, 255);
+    inside = color(255);
     points = new ArrayList<PVector>();
     makeRandomShape();
   }
