@@ -1,3 +1,6 @@
+int MIN_SIZE = 10;
+int MAX_SIZE = 60;
+
 Orb o0, o1;
 PVector gravity;
 
@@ -5,9 +8,7 @@ void setup() {
   size(600, 400);
   o0 = new Orb();
   o1 = new Orb();
-  gravity = new PVector(0, 0.1);
-
-
+  gravity = new PVector(0, 1);
 }
 
 void draw() {
@@ -17,7 +18,9 @@ void draw() {
 
   o0.applyForce(gravity);
   o1.applyForce(gravity);
-
-  o0.move();
-  o1.move();
+  println(gravity);
+  
+  o0.run();
+  o1.run();
+  //println(o0);
 }

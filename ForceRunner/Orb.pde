@@ -32,13 +32,16 @@ class Orb {
   void run() {
     velocity.add(acceleration);
     position.add(velocity);
+    acceleration.mult(0);
 
     yBounce();
     xBounce();
   }//run
 
   void applyForce(PVector force) {
-    acceleration.add(force);
+    PVector scaledForce = force.copy();
+    scaledForce.div(size);
+    acceleration.add(scaledForce);
   }//applyForce
 
   void yBounce() {
@@ -62,5 +65,13 @@ class Orb {
       velocity.x *= -0.99;
     }
   }//xBounce
+  
+  String toString() {
+    String s = "";
+    s+= "pos: " + position;
+    s+= " vel: " + velocity;
+    s+= " acl: " + acceleration;
+    return s;
+  }
 
 }//Orb
