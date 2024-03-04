@@ -10,7 +10,7 @@ boolean moving;
 void setup() {
   size(600, 400);
   orbs = new Orb[NUM_ORBS];
-  makeOrbs(true);
+  makeOrbs(false);
 
   moving = true;
   gravity = new PVector(0, 0.2);
@@ -20,12 +20,12 @@ void setup() {
 void draw() {
   background(255);
   fill(0, 255, 255);
-  rect(0, 200, width, 200);
+  //rect(0, 200, width, 200);
   for (int o=0; o<orbs.length; o++) {
     orbs[o].display();
   }
   if (moving) {
-    applyForces();
+    //applyForces();
     for (int o=0; o<orbs.length; o++) {
       orbs[o].run();
     }

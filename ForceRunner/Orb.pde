@@ -51,7 +51,24 @@ class Orb {
     dragForce.mult(dragMag);
     return dragForce;
   }//getDragForce
-
+  //gravity as other "pulls" this
+  PVector getGravity(Orb other, float gravConst) {
+    if (this == other) {
+      return new PVector(0, 0);
+    }
+    
+    PVector g = other.position.copy();
+    g.sub(this.position);
+    g.normalize();
+    
+    float dist = this.position.dist(other.position);
+    dist = max(5, dist);
+    float mag = (gravConst * this.size * other.size);
+    mag = mag / (dist * dist);
+    
+    g.mult(mag);
+    return g;
+  }//getGravity
 
   void yBounce() {
     if (position.y < size/2) {
