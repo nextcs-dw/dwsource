@@ -1,9 +1,9 @@
 class Orb {
-
-  int size;
   PVector position;
   PVector velocity;
   PVector acceleration;
+
+  int size;
   color c;
 
   Orb (int x, int y, int s) {
@@ -11,7 +11,7 @@ class Orb {
     size = s;
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
-    c = color(0, 255, 255);
+    c = color(255, 0, 255);
   }//constructor
 
   Orb() {
@@ -29,26 +29,38 @@ class Orb {
     circle(position.x, position.y, size);
   }//display
 
+  void applyForce(PVector force) {
+    PVector scaleForce = force.copy().div(size);
+    acceleration.add(scaleForce);
+  }//applyForce
+
   void run() {
     velocity.add(acceleration);
     position.add(velocity);
+    acceleration.mult(0);
 
     yBounce();
     xBounce();
   }//run
 
-  void applyForce(PVector force) {
-    acceleration.add(force);
-  }//applyForce
+  PVector getDragForce(float cd) {
+    float dragMag = velocity.mag();
+    dragMag = -0.5 * dragMag * dragMag * cd;
+    PVector dragForce = velocity.copy();
+    dragForce.normalize();
+    dragForce.mult(dragMag);
+    return dragForce;
+  }//getDragForce
+
 
   void yBounce() {
     if (position.y < size/2) {
-      velocity.y*= -0.99;
       position.y = size/2;
+      velocity.y *= -0.99;
     }
-    if (position.y > height-size/2) {
-      velocity.y*= -0.99;
+    else if (position.y >= (height-size/2)) {
       position.y = height - size/2;
+      velocity.y *= -0.99;
     }
   }//yBounce
 
