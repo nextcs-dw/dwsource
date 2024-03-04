@@ -75,4 +75,12 @@ class Orb {
     }
   }//xBounce
 
+  String toString() {
+    String s = "";
+    s+= "pos: " + position;
+    s+= " vel: " + velocity;
+    s+= " acl: " + acceleration;
+    return s;
+  }
+
 }//Orb
