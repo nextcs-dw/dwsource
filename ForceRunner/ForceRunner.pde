@@ -1,16 +1,21 @@
 int NUM_ORBS = 8;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
+float MIN_MASS = 10;
+float MAX_MASS = 100;
+float GRAVITY = 0.5;
 
 Orb[] orbs;
 PVector gravity;
 PVector wind;
 boolean moving;
+FixedOrb earth;
 
 void setup() {
   size(600, 400);
   orbs = new Orb[NUM_ORBS];
-  makeOrbs(false);
+  makeOrbs(true);
+  //earth = new orb();
 
   moving = true;
   gravity = new PVector(0, 0.2);
@@ -26,6 +31,7 @@ void draw() {
   }
   if (moving) {
     //applyForces();
+    applyGravity();
     for (int o=0; o<orbs.length; o++) {
       orbs[o].run();
     }
@@ -38,6 +44,22 @@ void draw() {
 
   //saveFrame("data/####-drag.png");
 }//draw
+
+void applyGravity(boolean orbG, boolean earthG) {
+  for (int o0 = 0; o0 < orbs.length; o0++) {
+    if (orbG) {
+      for(int o1=0; o1<orbs.length; o1++) {
+        PVector g = orbs[o0].getGravity(orbs[o1], GRAVITY);
+        orbs[o0].applyForce(g);
+      } 
+    }//apply orb-orb gravity
+    if (earthG) {
+      PVector eg = orbs[o0].getGravity(earth, GRAVITY);
+      orbs[o0].applyForce(eg);
+    }//apply earth gravity
+  }
+}//applyGravity
+
 
 void applyForces() {
   for (int o=0; o<orbs.length; o++) {
@@ -74,7 +96,8 @@ void makeOrbs(boolean lineup) {
   int y = MAX_SIZE;
   for (int o=0;  o<orbs.length; o++) {
     if (lineup) {
-      orbs[o] = new Orb(x, y, int(random(MIN_SIZE, MAX_SIZE)));
+      orbs[o] = new Orb(x, y, int(random(MIN_SIZE, MAX_SIZE)),
+                        random(MIN_MASS, MAX_MASS));
       x+= MAX_SIZE + 10;
     }
     else {
