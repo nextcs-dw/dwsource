@@ -70,7 +70,9 @@ class Orb {
     g.normalize();
 
     float dist = this.position.dist(other.position);
-    dist = max(5, dist);
+    //dist = max(5, dist);
+    //dist = min(height, dist);
+    dist = constrain(dist, 5, height);
     float mag = (gravConst * this.mass * other.mass);
     mag = mag / (dist * dist);
 

@@ -1,8 +1,8 @@
 int NUM_ORBS = 8;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
-float MIN_MASS = 1;
-float MAX_MASS = 10;
+float MIN_MASS = 10;
+float MAX_MASS = 100;
 float GRAVITY = 1;
 
 Orb[] orbs;
@@ -15,7 +15,7 @@ void setup() {
   size(600, 400);
   orbs = new Orb[NUM_ORBS];
   makeOrbs(true);
-  earth = new FixedOrb(0, 0, 0, 0);
+  earth = new FixedOrb(width/2, height * 200, 1, 2000);
 
   moving = true;
   gravity = new PVector(0, 0.2);
@@ -68,17 +68,8 @@ void applyForces() {
 
 
 void keyPressed() {
-  if (keyCode == RIGHT) {
-    wind.x+= 0.1;
-  }
-  if (keyCode == LEFT) {
-    wind.x+= -0.1;
-  }
-  if (keyCode == DOWN) {
-    gravity.y+= 0.1;
-  }
-  if (keyCode == UP) {
-    gravity.y-= 0.1;
+  if (key == 'r'){
+    makeOrbs(true);
   }
   if (key == ' ') {
     moving = !moving;
