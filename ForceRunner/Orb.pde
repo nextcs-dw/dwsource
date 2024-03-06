@@ -14,20 +14,21 @@ class Orb {
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     c = color(0, 255, 255);
+    color c1 = color(0);
+    c = lerpColor(c, c1, (mass/size)/(MAX_MASS/MIN_SIZE));
   }//constructor
 
   Orb() {
-    this(0, 0, 0, 0);
-    int s = int(random(MIN_SIZE, MAX_SIZE));
-    int x = int(random(s/2, width - s/2));
-    int y = int(random(s/2, height - s/2));
+    size = int(random(MIN_SIZE, MAX_SIZE));
+    int x = int(random(size/2, width - size/2));
+    int y = int(random(size/2, height - size/2));
     mass = random(MIN_MASS, MAX_MASS);
-    position.x = x;
-    position.y = y;
-    size = s;
+    position = new PVector(x, y);
+    velocity = new PVector(0, 0);
+    acceleration = new PVector(0, 0);
+    c = color (0, 255, 255);
     color c1 = color(0);
-    float p = (mass/size)/(MAX_MASS/MIN_SIZE);
-    c = lerpColor(c, c1, p);
+    c = lerpColor(c, c1, (mass/size)/(MAX_MASS/MIN_SIZE));
   }//default constructor
 
   void display() {
@@ -57,22 +58,22 @@ class Orb {
     dragForce.mult(dragMag);
     return dragForce;
   }//getDragForce
-  
+
   //gravity as other "pulls" this
   PVector getGravity(Orb other, float gravConst) {
     if (this == other) {
       return new PVector(0, 0);
     }
-    
+
     PVector g = other.position.copy();
     g.sub(this.position);
     g.normalize();
-    
+
     float dist = this.position.dist(other.position);
     dist = max(5, dist);
     float mag = (gravConst * this.mass * other.mass);
     mag = mag / (dist * dist);
-    
+
     g.mult(mag);
     return g;
   }//getGravity

@@ -1,9 +1,9 @@
 int NUM_ORBS = 8;
 int MIN_SIZE = 10;
 int MAX_SIZE = 60;
-float MIN_MASS = 10;
-float MAX_MASS = 100;
-float GRAVITY = 0.5;
+float MIN_MASS = 1;
+float MAX_MASS = 10;
+float GRAVITY = 1;
 
 Orb[] orbs;
 PVector gravity;
@@ -15,7 +15,7 @@ void setup() {
   size(600, 400);
   orbs = new Orb[NUM_ORBS];
   makeOrbs(true);
-  //earth = new orb();
+  earth = new FixedOrb(0, 0, 0, 0);
 
   moving = true;
   gravity = new PVector(0, 0.2);
@@ -31,17 +31,11 @@ void draw() {
   }
   if (moving) {
     //applyForces();
-    applyGravity();
+    applyGravity(false, true);
     for (int o=0; o<orbs.length; o++) {
       orbs[o].run();
     }
   }//moving
-  fill(0);
-  textAlign(LEFT, TOP);
-  textSize(16);
-  text("wind: " + wind, 0, 0);
-  text("gravity: " + gravity, 0, 16);
-
   //saveFrame("data/####-drag.png");
 }//draw
 
@@ -51,7 +45,7 @@ void applyGravity(boolean orbG, boolean earthG) {
       for(int o1=0; o1<orbs.length; o1++) {
         PVector g = orbs[o0].getGravity(orbs[o1], GRAVITY);
         orbs[o0].applyForce(g);
-      } 
+      }
     }//apply orb-orb gravity
     if (earthG) {
       PVector eg = orbs[o0].getGravity(earth, GRAVITY);
