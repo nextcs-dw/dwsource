@@ -12,6 +12,8 @@ boolean moving;
 boolean earthGravity;
 FixedOrb earth;
 
+OrbNode o0, o1, o2;
+
 
 void setup() {
   size(600, 600);
@@ -19,19 +21,35 @@ void setup() {
 
   moving = false;
   earthGravity = false;
+  
+  
+  o0 = new OrbNode();
+  o1 = new OrbNode();
+  o2 = new OrbNode();
+  o0.next = o1;
+  o1.previous = o0;
+  o1.next = o2;
+  o2.previous = o1;
 }//setup
 
 void draw() {
   background(255);
   displayMode();
-
+  
+  o0.display();
+  o1.display();
+  o2.display();
 
   if (moving) {
-
+    o0.applySpring(SPRING_LENGTH, SPRING_K);
+    o1.applySpring(SPRING_LENGTH, SPRING_K);
+    o2.applySpring(SPRING_LENGTH, SPRING_K);
     if (earthGravity) {
 
     }
-
+    o0.run();
+    o1.run();
+    o2.run();
   }//moving
 
 }//draw
