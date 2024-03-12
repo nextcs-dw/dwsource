@@ -21,8 +21,8 @@ void setup() {
 
   moving = false;
   earthGravity = false;
-  
-  
+
+
   o0 = new OrbNode();
   o1 = new OrbNode();
   o2 = new OrbNode();
@@ -35,7 +35,7 @@ void setup() {
 void draw() {
   background(255);
   displayMode();
-  
+
   o0.display();
   o1.display();
   o2.display();

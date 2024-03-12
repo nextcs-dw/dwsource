@@ -34,6 +34,7 @@ class OrbNode extends Orb {
       }
       line(this.position.x, this.position.y, next.position.x, next.position.y);
     }
+    stroke(0);
     super.display();
   }
 
