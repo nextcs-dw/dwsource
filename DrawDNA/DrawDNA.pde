@@ -31,7 +31,7 @@ void strandCompare(String strand0, String strand1, int x, int y, int sz) {
 
   //draw any mismatch squares
   noFill();
-  stroke(255, 0, 0);
+  stroke(255, 255, 0);
   strokeWeight(2);
   for(int b=0; b < strand0.length(); b++) {
     if ( !basePairMatch(strand0.charAt(b), strand1.charAt(b)) ) {
