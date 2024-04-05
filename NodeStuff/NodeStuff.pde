@@ -4,10 +4,12 @@ void setup() {
   TreeNode n1 = new TreeNode('B', width/4, 100);
   TreeNode n2 = new TreeNode('C', width/4 * 3, 100);
   TreeNode n3 = new TreeNode('D', width/8, 150);
+  TreeNode n4 = new TreeNode('E', width/8 * 5, 150);
 
   n0.left = n1;
   n0.right = n2;
   n1.left = n3;
+  n2.left = n4;
 
   display(n0);
 }
