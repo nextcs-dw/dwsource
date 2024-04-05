@@ -1,14 +1,14 @@
-class Node {
+class TreeNode {
 
-  Node left;
-  Node right;
+  TreeNode left;
+  TreeNode right;
 
   char data;
   int size;
   color c;
   PVector position;
 
-  Node(char d, int x, int y) {
+  TreeNode(char d, int x, int y) {
     data = d;
     position = new PVector(x, y);
     size = 40;
@@ -29,4 +29,4 @@ class Node {
     fill(0);
     text(data, position.x, position.y);
   }//display
-}//Node Class
+}//TreeNode Class
