@@ -11,7 +11,7 @@ class TreeNode {
   TreeNode(char d, int x, int y) {
     data = d;
     position = new PVector(x, y);
-    size = 40;
+    size = NODE_SIZE;
     c = color(255, 0, 255);
   }//constructor
 
