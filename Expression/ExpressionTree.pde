@@ -13,8 +13,14 @@ class ExpressionTree {
   }//reset
 
   ExpressionTreeNode makeTree(int x, int y, int levels, boolean full) {
-
+    if (levels == 0) {
+      return null;
+    }//base case
+    
     boolean operator = full || random(1) < float(levels)/numLevels;
+    if (levels == 1) {
+      operator = false;
+    }//a leaf must be a valu
 
     ExpressionTreeNode tn = new ExpressionTreeNode(operator, x, y);
 
@@ -23,6 +29,11 @@ class ExpressionTree {
     int xLeft = int(x - xspacing);
     int xRight = int(x + xspacing);
     y+= Y_SPACE;
+
+    if (operator) {
+      tn.left = makeTree(xLeft, y, levels-1, full);
+      tn.right = makeTree(xRight, y, levels-1, full);
+    }
 
     return tn;
   }//makeTree

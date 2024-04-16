@@ -19,11 +19,33 @@ class ExpressionTreeNode {
 
   ExpressionTreeNode(boolean operation, int x, int y) {
     this(0, 0, x, y);
-
+    if (operation) {
+      type = int(random(4)+1);
+      value = 0;
+    }//pick random operation
+    else {
+      type = VALUE;
+      value = int(random(-99, 100));
+    }//ranodm value
   }//random constructor
 
   String toString() {
     String s = "";
+    if (type == VALUE) {
+      s+= value;
+    }
+    if (type == ADDITION) {
+      s+= "+";
+    }
+    else if (type == SUBTRACTION) {
+      s+= "-";
+    }
+    else if (type == MULTIPLICATION) {
+      s+= "*";
+    }
+    else if (type == DIVISION){
+      s+= "/";
+    }
     return s;
   }//toString
 
