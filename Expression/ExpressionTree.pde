@@ -16,11 +16,11 @@ class ExpressionTree {
     if (levels == 0) {
       return null;
     }//base case
-    
+
     boolean operator = full || random(1) < float(levels)/numLevels;
     if (levels == 1) {
       operator = false;
-    }//a leaf must be a valu
+    }//a leaf must be a value
 
     ExpressionTreeNode tn = new ExpressionTreeNode(operator, x, y);
 
@@ -34,9 +34,30 @@ class ExpressionTree {
       tn.left = makeTree(xLeft, y, levels-1, full);
       tn.right = makeTree(xRight, y, levels-1, full);
     }
-
     return tn;
   }//makeTree
+
+  float evaluate() {
+    return evaluate(root);
+  }
+  float evaluate(ExpressionTreeNode current) {
+    if (current == null) {
+      return 0;
+    }
+    if (current.type == ADDITION) {
+      current.value = evaluate(current.left) + evaluate(current.right);
+    }
+    else if (current.type == SUBTRACTION) {
+      current.value = evaluate(current.left) - evaluate(current.right);
+    }
+    else if (current.type == MULTIPLICATION) {
+      current.value = evaluate(current.left) * evaluate(current.right);
+    }
+    else if (current.type == DIVISION) {
+      current.value = evaluate(current.left) / evaluate(current.right);
+    }
+    return current.value;
+  }//evaluate
 
   int countNodes() {
     return countNodes(root);
@@ -81,7 +102,7 @@ class ExpressionTree {
   }
   String preOrder(ExpressionTreeNode current) {
     if (current != null) {
-      String s = "" + current;
+      String s = "" + current + " ";
       s+= preOrder(current.left);
       s+= preOrder(current.right);
       return s;
@@ -99,7 +120,7 @@ class ExpressionTree {
       String s = "";
       s+= postOrder(current.left);
       s+= postOrder(current.right);
-      s+= current;
+      s+= current + " ";
       return s;
     }//there's something to see!
     else {
@@ -113,9 +134,15 @@ class ExpressionTree {
   String inOrder(ExpressionTreeNode current) {
     if (current != null) {
       String s = "";
+      if (current.type != VALUE) {
+        s+= "(";
+      }
       s+= inOrder(current.left);
       s+= current;
       s+= inOrder(current.right);
+      if (current.type != VALUE) {
+        s+= ")";
+      }
       return s;
     }//there's something to see!
     else {

@@ -15,11 +15,16 @@ void setup() {
 
   hal = new ExpressionTree(width/2, NODE_SIZE + 10, NUM_LEVELS, false);
   hal.display();
+  println(hal.preOrder());
+  println(hal.postOrder());
+  println(hal.inOrder());
+  println(hal.evaluate());
 }//setup
 
 void draw() {
   background(255);
   hal.display();
+  showStats();
 }//draw
 
 
@@ -40,13 +45,16 @@ void showStats() {
   textAlign(LEFT, TOP);
   text("nodes: " + hal.countNodes(), padding, padding);
   text("height: " + hal.getHeight(), padding, textsize + padding);
+  text("result: " + hal.evaluate(), padding, (textsize + padding) * 2);
 }
 
 void keyPressed() {
   if (key == 'r') {
     hal.reset(false);
+    hal.evaluate();
   }
   if (key == 'f') {
     hal.reset(true);
+    hal.evaluate();
   }
 }//keyPressed

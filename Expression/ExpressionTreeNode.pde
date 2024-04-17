@@ -49,20 +49,40 @@ class ExpressionTreeNode {
     return s;
   }//toString
 
+  String displayString() {
+    String s = "";
+    if (type == ADDITION) {
+      s+= "+\n";
+    }
+    else if (type == SUBTRACTION) {
+      s+= "-\n";
+    }
+    else if (type == MULTIPLICATION) {
+      s+= "*\n";
+    }
+    else if (type == DIVISION){
+      s+= "/\n";
+    }
+    s+= value;
+    return s;
+  }//toString
+
   void display() {
     fill(c);
+    stroke(0);
     if (left != null) {
       line(position.x, position.y, left.position.x, left.position.y);
     }
     if (right != null) {
       line(position.x, position.y, right.position.x, right.position.y);
     }
+    noStroke();
     circle(position.x, position.y, size);
     textAlign(CENTER, CENTER);
     textSize(size - 20);
     fill(0);
 
-    text(toString(), position.x, position.y);
+    text(displayString(), position.x, position.y);
   }//display
 
 }//ExpressionTreeNode Class
