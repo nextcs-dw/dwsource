@@ -28,6 +28,10 @@ class ExpressionTreeNode {
       value = int(random(-99, 100));
     }//ranodm value
   }//random constructor
+  
+  boolean isSelected(PVector p) {
+    return position.dist(p) <= size/2;
+  }//isSelected
 
   String toString() {
     String s = "";
